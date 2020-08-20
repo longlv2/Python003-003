@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
+import re
 
 user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
 header = {
@@ -13,7 +14,9 @@ resopnse = requests.get(myurl, headers=header)
 bs_info = bs(resopnse.text, 'html.parser')
 
 
-for tags in bs_info.find_all('div', attrs={'class': 'movie-item film-channel'}):
+for tags in bs_info.find_all('div', attrs={'class': 'channel-detail movie-item-title'}):
+    print(tags.get('title'))
     for atag in tags.find_all('a'):
         print(atag.get('href'))
+        #print(re.split(' ',atag.get_text())[0])
         #print(atag.find(''))
