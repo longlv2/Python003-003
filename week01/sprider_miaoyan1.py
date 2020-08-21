@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as bs
-import re
+import lxml.etree
+import pandas as pd
 
 user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
 header = {
@@ -9,14 +10,29 @@ header = {
 }
 myurl = 'https://maoyan.com/films?showType=3'
 resopnse = requests.get(myurl, headers=header)
-#print(resopnse.text)
 
 bs_info = bs(resopnse.text, 'html.parser')
+prefix_url = 'https://maoyan.com'
+urls_list = []
 
-
+# 获取电影url
 for tags in bs_info.find_all('div', attrs={'class': 'channel-detail movie-item-title'}):
-    print(tags.get('title'))
+    #print(tags.get('title'))
     for atag in tags.find_all('a'):
-        print(atag.get('href'))
-        #print(re.split(' ',atag.get_text())[0])
-        #print(atag.find(''))
+        urls_list.append(prefix_url + atag.get('href'))
+#print(urls_list)
+for url in urls_list[0:10]:
+    print(f'当前链接：{url}')
+    resopnse = requests.get(url, headers=header)
+    selector = lxml.etree.HTML(resopnse.text)
+    # 电影名称
+    film_name = selector.xpath('/html/body/div[3]/div/div[2]/div[1]/h1/text()')
+    print(f'电影名称: {film_name}')
+    # 电影类型
+    film_type = selector.xpath('/html/body/div[3]/div/div[2]/div[1]/ul/li[1]/a[1]/text()')
+    print(f'电影类型：{film_type}')
+    # 上映时间
+    plan_date = selector.xpath('/html/body/div[3]/div/div[2]/div[1]/ul/li[3]/text()')
+    print(f'上映日期：{plan_date}')
+
+
