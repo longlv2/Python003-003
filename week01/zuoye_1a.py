@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
-import pandas as pd
+import pandas 
 import time
 
 def get_url(myurl):
@@ -23,28 +23,29 @@ for tags in bs_info.find_all('div', attrs={'class': 'channel-detail movie-item-t
             urls_list.append(prefix_url + atag.get('href'))
 #print(urls_list)
 
-movies = {}
+movies = {'电影名称':[],'电影类型':[],'上映日期':[]}
 for url in urls_list:
     time.sleep(5)
     bs_info = get_url(url)
     #获取电影名称
     film_name = bs_info.find('h1', attrs={'class':'name'}).text
-    movies['电影名称'] = film_name
+    movies['电影名称'].append(film_name) 
     print(film_name)
 
     #获取电影类型
-    file_type_list= bs_info.find('a', attrs={'class': 'text=link'})
-    movies['电影类型'] = file_type_list
-    print(file_type_list)
+    film_type_list= bs_info.find('a', attrs={'class': 'text-link'}).text
+    movies['电影类型'].append(film_type_list)
+    print(film_type_list)
 
     #获取上映时间
     plan_date = bs_info.find_all('li', attrs={'class': 'ellipsis'})[2].text
-    movies_data['上映日期'] = plan_date
+    movies['上映日期'].append(plan_date) 
     print(plan_date)
 
-            
-movie_data = pd.DataFrame(data= movies)
-movie_data.to_csv('./movie1.csv', encoding='utf-8', index=False, header=False)
+print(movies)
+
+movie = pandas.DataFrame(data=movies,index=[0])
+movie.to_csv('./movies.csv', encoding='utf_8_sig', index=False)
 
 
 

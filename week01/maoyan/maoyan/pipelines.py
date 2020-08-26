@@ -10,4 +10,9 @@ from itemadapter import ItemAdapter
 
 class MaoyanPipeline:
     def process_item(self, item, spider):
+        film_name = item['film_name']
+        film_types = item['film_types']
+        plan_date = item['plan_date']
+
+        
         return item
