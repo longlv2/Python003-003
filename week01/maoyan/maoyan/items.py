@@ -10,7 +10,7 @@ class MaoyanItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     # pass
-    name = scrapy.Field()
+    film_name = scrapy.Field()
     film_types = scrapy.Field()
     plan_date = scrapy.Field()
     

@@ -6,13 +6,18 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-
+import pandas as pd
 
 class MaoyanPipeline:
     def process_item(self, item, spider):
         film_name = item['film_name']
         film_types = item['film_types']
         plan_date = item['plan_date']
-
+        movie = pd.DataFrame({
+            'film_name': film_name,
+            'film_type': film_types,
+            'plan_date': plan_date
+        })
+        movie.to_csv('./movie.csv', mode='a', encoding='utf-8', index=False, header=False)
         
-        return item
+        #return item
