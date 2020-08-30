@@ -14,11 +14,6 @@ class MaoyanPipeline:
         film_types = item['film_types']
         plan_date = item['plan_date']
         
-        # movie = pd.DataFrame({
-        #     'film_name': film_name,
-        #     'film_type': film_types,
-        #     'plan_date': plan_date
-        # })
         movie = pd.DataFrame([
             film_name, film_types, plan_date
         ])
